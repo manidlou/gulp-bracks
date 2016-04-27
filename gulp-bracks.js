@@ -14,6 +14,7 @@ const thru = require('through2');
 const gutil = require('gulp-util');
 const PLUGIN_NAME = 'gulp-bracks';
 var PluginError = gutil.PluginError;
+
 /**
  * end tags regular expressions object mapping
  * @private
@@ -362,7 +363,7 @@ const EJS_TAGS = {
   '_%>': /(?:_%\])/g
 };
 
-/*
+/**
  * bracks gulp-plugin main function
  *
  * @return {stream.Transform} a through2 stream with the callback function containing the transformed file
