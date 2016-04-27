@@ -399,21 +399,21 @@ module.exports = function() {
 
     resolved_file_path = '';
     split_path = (file.path).split('/');
-    if (split_path.indexOf('bracks') !== -1) {
+    if (split_path.indexOf('bracks') === -1) {
+      return callback(new PluginError(PLUGIN_NAME, 'no \'bracks\' directory found'), file);
+    } else {
       split_path.splice(split_path.indexOf('bracks'), 1);
       for (i = 0; i < split_path.length; i += 1) {
         resolved_file_path += split_path[i] + '/';
       }
-    } else {
-      return callback(new PluginError(PLUGIN_NAME, 'no \'bracks\' directory found'), file);
+      resolved_file_path = resolved_file_path.slice(0, resolved_file_path.length - 1);
+      transformed_file = new gutil.File({
+        cwd: "",
+        base: "",
+        path: resolved_file_path,
+        contents: new Buffer(src)
+      });
+      return callback(null, transformed_file);
     }
-    resolved_file_path = resolved_file_path.slice(0, resolved_file_path.length - 1);
-    transformed_file = new gutil.File({
-      cwd: "",
-      base: "",
-      path: resolved_file_path,
-      contents: new Buffer(src)
-    });
-    return callback(null, transformed_file);
   });
 };
