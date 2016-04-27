@@ -30,12 +30,12 @@ gulp.task('default', ['bracks', 'watch']);
 ```
 <!DOCTYPE html>
 html[
-  c[my comment]c
-  head[title[my page title]title]head
+  c[your comment]c
+  head[title[your page title]title]head
   body[
     h1[explore your mind]h1
-    b[my bold text]b
-    div(id="mydiv" class="mydivclass")[
+    b[your bold text]b
+    div(id="yourdiv" class="yourdivclass")[
       a(href="https://www.google.com")[link to google]a
       ul(style="list-style-type:disc")[
         li[item1]li
@@ -54,21 +54,21 @@ html[
 <!DOCTYPE html>
 html[
   head[
-    title[my page title]title
+    title[your page title]title
     link(rel="stylesheet" href="/stylesheets/style.css")]
     meta(charset="utf-8")]
   ]head
   body(class="[%= page %]")[
-  	[% include partials/template/header.ejs %]
-    	section(class="layout")[
-      	div(class="primary")[
-        	[%- include partials/content/home-page.ejs -%]
-      	]div
-      	p[explore your mind]p
-      	aside(class="secondary")[
-        	[%- include partials/content/proj-page.ejs %]
-      	]aside
-    	]section
+    [% include partials/template/header.ejs %]
+      section(class="layout")[
+        div(class="primary")[
+          [%- include partials/content/home-page.ejs -%]
+        ]div
+        p[explore your mind]p
+        aside(class="secondary")[
+          [%- include partials/content/proj-page.ejs %]
+        ]aside
+      ]section
     [% include partials/template/footer.ejs %]
   ]body
 ]html
