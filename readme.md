@@ -58,15 +58,15 @@ html[
     link(rel="stylesheet" href="/stylesheets/style.css")]
     meta(charset="utf-8")]
   ]head
-  body(class="[%= page %]")[
+  body(class="%= page %]")[
     [% include partials/template/header.ejs %]
       section(class="layout")[
         div(class="primary")[
-          [%- include partials/content/home-page.ejs -%]
+          %- include partials/content/home-page.ejs -%
         ]div
         p[explore your mind]p
         aside(class="secondary")[
-          [%- include partials/content/proj-page.ejs %]
+          %- include partials/content/proj-page.ejs %]
         ]aside
       ]section
     [% include partials/template/footer.ejs %]
