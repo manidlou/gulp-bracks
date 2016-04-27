@@ -1,0 +1,75 @@
+#gulp-bracks
+
+bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
+#####Install
+`npm install gulp-bracks --save-dev`
+#####How to use
+If you decided to write your `html` or `ejs` files `bracks` style, just create a directory under your project root directory and name it `bracks`. Then, keep all the `html` or `ejs` files that you want to write in a `bracks` syntax in this `bracks` direcory. Files can be located in sub-direcories in this `bracks` directory, just notice the pattern for the gulp src path in the following `gulpfile.js` example. Notice the file extension can be `.html` or `.ejs`. `bracks` parser understands both of them. Under the hood, the parser parses all files under `bracks` directory, and returns the transformed file for being used by the next function down in the stream.
+
+Something like the following will do the job for you.
+
+*gulpfile.js*
+```javascript
+var gulp = require('gulp');
+var parse_bracks = require('gulp-bracks');
+
+gulp.task('bracks', function() {
+  return gulp.src('./bracks/**/*.html')
+    .pipe(parse_bracks())
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('watch', function() {
+  gulp.watch('./bracks/**/*.html', ['bracks']);
+});
+
+gulp.task('default', ['bracks', 'watch']);
+```
+#####Example of a `bracks` style html document
+*index.html*:
+```
+<!DOCTYPE html>
+html[
+  c[my comment]c
+  head[title[my page title]title]head
+  body[
+    h1[explore your mind]h1
+    b[my bold text]b
+    div(id="mydiv" class="mydivclass")[
+      a(href="https://www.google.com")[link to google]a
+      ul(style="list-style-type:disc")[
+        li[item1]li
+        li[item2]li
+      ]ul
+    ]div
+    div[
+      p[it is a samp s script footer paragraph tester]p
+    ]div
+  ]body
+]html
+```
+#####Example of a `bracks` style ejs document
+*index.ejs*:
+```
+<!DOCTYPE html>
+html[
+  head[
+    title[my page title]title
+    link(rel="stylesheet" href="/stylesheets/style.css")]
+    meta(charset="utf-8")]
+  ]head
+  body(class="[%= page %]")[
+  	[% include partials/template/header.ejs %]
+    	section(class="layout")[
+      	div(class="primary")[
+        	[%- include partials/content/home-page.ejs -%]
+      	]div
+      	p[explore your mind]p
+      	aside(class="secondary")[
+        	[%- include partials/content/proj-page.ejs %]
+      	]aside
+    	]section
+    [% include partials/template/footer.ejs %]
+  ]body
+]html
+```

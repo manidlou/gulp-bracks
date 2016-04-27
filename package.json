@@ -1,0 +1,27 @@
+{
+  "name": "gulp-bracks",
+  "version": "1.0.0",
+  "description": "bracks plugin for gulp",
+  "main": "gulp-bracks.js",
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.1"
+  },
+  "keywords": [
+    "gulp",
+    "gulpplugin",
+    "bracks",
+    "bracks-plugin",
+    "gulp-bracks"
+  ],
+  "author": "Mawni Maghsoudlou",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mawni/gulp-bracks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mawni/gulp-bracks/issues"
+  },
+  "homepage": "https://github.com/mawni/gulp-bracks#readme"
+}
