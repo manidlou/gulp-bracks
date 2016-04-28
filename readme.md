@@ -30,7 +30,7 @@ gulp.task('default', ['bracks', 'watch']);
 ```
 <!DOCTYPE html>
 html[
-  c[your comment]c
+  c/[your comment]/c
   head[title[your page title]title]head
   body[
     h1[explore your mind]h1
