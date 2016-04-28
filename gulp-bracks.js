@@ -457,7 +457,6 @@ module.exports = function() {
         }
       });
     } else if (path.parse(file.path).ext === '.ejs') {
-      console.log(file.extname);
       resolve_file_path(file, function(err, resolved_file_path) {
         if (err !== null) {
           return callback(new PluginError(PLUGIN_NAME, err), file);
