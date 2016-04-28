@@ -440,7 +440,6 @@ module.exports = function() {
       return callback(null, file);
     }
     if (path.parse(file.path).ext === '.html') {
-      console.log(file.extname);
       resolve_file_path(file, function(err, resolved_file_path) {
         if (err !== null) {
           return callback(new PluginError(PLUGIN_NAME, err), file);
