@@ -10,6 +10,8 @@
  * Module dependencies.
  * @private
  */
+
+const path = require('path');
 const thru = require('through2');
 const gutil = require('gulp-util');
 const PLUGIN_NAME = 'gulp-bracks';
@@ -19,6 +21,7 @@ var PluginError = gutil.PluginError;
  * end tags regular expressions object mapping
  * @private
  */
+
 const END_TAGS = {
   '</a>': /(?:\]\ba\b)/g,
   '</abbr>': /(?:\]\babbr\b)/g,
@@ -116,6 +119,7 @@ const END_TAGS = {
  * start tags without attributes regular expressions object mapping
  * @private
  */
+
 const START_TAGS_WITHOUT_ATTR = {
   '<a>': /(?:\ba\b\[)/g,
   '<abbr>': /(?:\babbr\b\[)/g,
@@ -215,6 +219,7 @@ const START_TAGS_WITHOUT_ATTR = {
  * void tags without attributes regular expressions object mapping
  * @private
  */
+
 const VOID_TAGS_WITHOUT_ATTR = {
   '<area>': /(?:\[\barea\b\])/g,
   '<base>': /(?:\[\bbase\b\])/g,
@@ -237,6 +242,7 @@ const VOID_TAGS_WITHOUT_ATTR = {
  * start and void tags with attributes regular expressions object mapping
  * @private
  */
+
 const START_VOID_TAGS_WITH_ATTR = {
   '<a ': /(?:\ba\b\()/g,
   '<abbr ': /(?:\babbr\b\()/g,
@@ -351,6 +357,7 @@ const START_VOID_TAGS_WITH_ATTR = {
  * ejs specific tags regular expressions object mapping
  * @private
  */
+
 const EJS_TAGS = {
   '<%': /(?:\[%)/g,
   '<%=': /(?:%=)/g,
@@ -364,6 +371,62 @@ const EJS_TAGS = {
 };
 
 /**
+ * resolve transformed file path
+ *
+ * @param {Object} [file] a vinyl file object
+ * @param {Function} [callback] a callback function
+ * @return {Function} callback function containing either an error or the resolved file path
+ * @private
+ */
+
+function resolve_file_path(file, callback) {
+  var resolved_file_path = '';
+  var split_path = (file.path).split('/');
+  var i;
+  if (split_path.indexOf('bracks') === -1) {
+    return callback('bracks-parser error -> path to \'bracks\' directory cannot be null.', file);
+  } else {
+    split_path.splice(split_path.indexOf('bracks'), 1);
+    for (i = 0; i < split_path.length; i += 1) {
+      resolved_file_path += split_path[i] + '/';
+    }
+    resolved_file_path = resolved_file_path.slice(0, resolved_file_path.length - 1);
+    return callback(null, resolved_file_path);
+  }
+}
+
+/**
+ * parse 'bracks' style html document. return the parsed regular html document.
+ *
+ * @param {Object} [file] a vinyl file object
+ * @param {Function} [callback] a callback function
+ * @return {Function} callback function containing the parsed regular html
+ * @private
+ */
+
+function parse_html(file, callback) {
+  var src = file.contents.toString();
+  src = src.replace(/(?:\]\/\bc\b)/g, '-->');
+  src = src.replace(/(?:\bc\b\/\[)/g, '<!--');
+  Object.keys(VOID_TAGS_WITHOUT_ATTR).forEach(function(key) {
+    src = src.replace(VOID_TAGS_WITHOUT_ATTR[key], key);
+  });
+  Object.keys(END_TAGS).forEach(function(key) {
+    src = src.replace(END_TAGS[key], key);
+  });
+  Object.keys(START_TAGS_WITHOUT_ATTR).forEach(function(key) {
+    src = src.replace(START_TAGS_WITHOUT_ATTR[key], key);
+  });
+  Object.keys(START_VOID_TAGS_WITH_ATTR).forEach(function(key) {
+    src = src.replace(START_VOID_TAGS_WITH_ATTR[key], key);
+  });
+  src = src.replace(/(?:\)\[)|(?:\)\])/g, '>');
+  src = src.replace(/(?:\\)/g, '');
+  src = src.replace(/(?:> <)/g, '><');
+  return callback(src);
+}
+
+/**
  * bracks gulp-plugin main function
  *
  * @return {stream.Transform} a through2 stream with the callback function containing the transformed file
@@ -372,49 +435,48 @@ const EJS_TAGS = {
 
 module.exports = function() {
   return thru.obj(function(file, enc, callback) {
-    var i, split_path, resolved_file_path, src, transformed_file;
+    var transformed_ejs_src, transformed_file;
     if (file.isNull()) {
       return callback(null, file);
     }
-    src = file.contents.toString();
-    src = src.replace(/(?:\]\bc\b)/g, '-->');
-    src = src.replace(/(?:\bc\b\[)/g, '<!--');
-    Object.keys(VOID_TAGS_WITHOUT_ATTR).forEach(function(key) {
-      src = src.replace(VOID_TAGS_WITHOUT_ATTR[key], key);
-    });
-    Object.keys(END_TAGS).forEach(function(key) {
-      src = src.replace(END_TAGS[key], key);
-    });
-    Object.keys(START_TAGS_WITHOUT_ATTR).forEach(function(key) {
-      src = src.replace(START_TAGS_WITHOUT_ATTR[key], key);
-    });
-    Object.keys(START_VOID_TAGS_WITH_ATTR).forEach(function(key) {
-      src = src.replace(START_VOID_TAGS_WITH_ATTR[key], key);
-    });
-    Object.keys(EJS_TAGS).forEach(function(key) {
-      src = src.replace(EJS_TAGS[key], key);
-    });
-    src = src.replace(/(?:\)\[)|(?:\)\])/g, '>');
-    src = src.replace(/(?:\\)/g, '');
-    src = src.replace(/(?:> <)/g, '><');
-
-    resolved_file_path = '';
-    split_path = (file.path).split('/');
-    if (split_path.indexOf('bracks') === -1) {
-      return callback(new PluginError(PLUGIN_NAME, 'no \'bracks\' directory found'), file);
-    } else {
-      split_path.splice(split_path.indexOf('bracks'), 1);
-      for (i = 0; i < split_path.length; i += 1) {
-        resolved_file_path += split_path[i] + '/';
-      }
-      resolved_file_path = resolved_file_path.slice(0, resolved_file_path.length - 1);
-      transformed_file = new gutil.File({
-        cwd: "",
-        base: "",
-        path: resolved_file_path,
-        contents: new Buffer(src)
+    if (path.parse(file.path).ext === '.html') {
+      console.log(file.extname);
+      resolve_file_path(file, function(err, resolved_file_path) {
+        if (err !== null) {
+          return callback(new PluginError(PLUGIN_NAME, err), file);
+        } else {
+          parse_html(file, function(transformed_html_src) {
+            transformed_file = new gutil.File({
+              cwd: "",
+              base: "",
+              path: resolved_file_path,
+              contents: new Buffer(transformed_html_src)
+            });
+            return callback(null, transformed_file);
+          });
+        }
       });
-      return callback(null, transformed_file);
+    } else if (path.parse(file.path).ext === '.ejs') {
+      console.log(file.extname);
+      resolve_file_path(file, function(err, resolved_file_path) {
+        if (err !== null) {
+          return callback(new PluginError(PLUGIN_NAME, err), file);
+        } else {
+          parse_html(file, function(transformed_html_src) {
+            transformed_ejs_src = transformed_html_src;
+            Object.keys(EJS_TAGS).forEach(function(key) {
+              transformed_ejs_src = transformed_ejs_src.replace(EJS_TAGS[key], key);
+            });
+            transformed_file = new gutil.File({
+              cwd: "",
+              base: "",
+              path: resolved_file_path,
+              contents: new Buffer(transformed_ejs_src)
+            });
+            return callback(null, transformed_file);
+          });
+        }
+      });
     }
   });
 };
