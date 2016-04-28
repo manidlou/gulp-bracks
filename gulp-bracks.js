@@ -371,7 +371,7 @@ const EJS_TAGS = {
 };
 
 /**
- * resolve transformed file path
+ * resolve parsed file path
  *
  * @param {Object} [file] a vinyl file object
  * @param {Function} [callback] a callback function
