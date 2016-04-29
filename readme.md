@@ -40,6 +40,7 @@ html[
       ul(style="list-style-type:disc")[
         li[item1]li
         li[item2]li
+        li[a(href="https://www.google.com")[link to google]a]li
       ]ul
     ]div
     div[
@@ -55,8 +56,8 @@ html[
 html[
   head[
     title[your page title]title
-    link(rel="stylesheet" href="/stylesheets/style.css")]
-    meta(charset="utf-8")]
+    link(rel="stylesheet" href="/stylesheets/style.css")]]
+    meta(charset="utf-8")]]
   ]head
   body(class="%= page %]")[
     [% include partials/template/header.ejs %]
