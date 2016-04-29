@@ -56,8 +56,8 @@ html[
 html[
   head[
     title[your page title]title
-    link(rel="stylesheet" href="/stylesheets/style.css")]]
-    meta(charset="utf-8")]]
+    link(rel="stylesheet" href="/stylesheets/style.css")/]
+    meta(charset="utf-8")/]
   ]head
   body(class="%= page %]")[
     [% include partials/template/header.ejs %]
