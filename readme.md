@@ -79,5 +79,5 @@ html[
 
 [npm-image]: https://img.shields.io/npm/v/gulp-bracks.svg
 [npm-url]: https://npmjs.org/package/gulp-bracks
-[downloads-image]: https://img.shields.io/npm/dt/gulp-bracks.svg
+[downloads-image]: https://img.shields.io/npm/dm/gulp-bracks.svg
 [downloads-url]: https://npmjs.org/package/gulp-bracks
