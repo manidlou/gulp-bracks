@@ -1,5 +1,8 @@
 #gulp-bracks
 
+[![npm](https://img.shields.io/npm/v/gulp-bracks.svg?maxAge=2592000)]() 
+[![npm](https://img.shields.io/npm/dt/gulp-bracks.svg?maxAge=2592000)]() 
+
 bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
 #####Install
 `npm install gulp-bracks --save-dev`
