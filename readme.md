@@ -1,7 +1,6 @@
 #gulp-bracks
 
-[![npm](https://img.shields.io/npm/v/gulp-bracks.svg?maxAge=2592000)]() 
-[![npm](https://img.shields.io/npm/dt/gulp-bracks.svg?maxAge=2592000)]() 
+[![NPM Version][npm-image]][npm-url] [![NPM Downloads][downloads-image]][downloads-url] 
 
 bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
 #####Install
@@ -77,3 +76,8 @@ html[
   ]body
 ]html
 ```
+
+[npm-image]: https://img.shields.io/npm/v/gulp-bracks.svg
+[npm-url]: https://npmjs.org/package/gulp-bracks
+[downloads-image]: https://img.shields.io/npm/dt/gulp-bracks.svg
+[downloads-url]: https://npmjs.org/package/gulp-bracks
