@@ -1,6 +1,6 @@
 {
   "name": "gulp-bracks",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "description": "bracks plugin for gulp",
   "main": "gulp-bracks.js",
   "scripts": {
