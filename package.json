@@ -3,6 +3,9 @@
   "version": "4.1.6",
   "description": "bracks plugin for gulp",
   "main": "gulp-bracks.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec ./test/*.js"
+  },
   "dependencies": {
     "gulp-util": "^3.0.7",
     "through2": "^2.0.1"
@@ -23,5 +26,10 @@
   "bugs": {
     "url": "https://github.com/mawni/gulp-bracks/issues"
   },
-  "homepage": "https://github.com/mawni/gulp-bracks#readme"
+  "homepage": "https://github.com/mawni/gulp-bracks#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "vinyl-fs": "^2.4.3"
+  }
 }
