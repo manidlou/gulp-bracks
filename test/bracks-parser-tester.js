@@ -1,27 +1,3 @@
-/*!
- * gulp-bracks
- * This software is released under the MIT license:
- * 
- * Copyright (c) <2016> <Mawni Maghsoudlou>
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 'use strict';
 
 /**
@@ -30,10 +6,9 @@
  */
 
 const path = require('path');
+const Vfile = require('vinyl');
+const vfs = require('vinyl-fs');
 const thru = require('through2');
-const gutil = require('gulp-util');
-const PLUGIN_NAME = 'gulp-bracks';
-var PluginError = gutil.PluginError;
 
 /**
  * end tags regular expressions object mapping
@@ -398,7 +373,7 @@ const EJS_TAGS = {
  */
 
 function resolve_file_path(file, callback) {
-  var resolved_file_path = '';
+  var resolved_path = '';
   var split_path = (file.path).split('/');
   var i;
   if (split_path.indexOf('bracks') === -1) {
@@ -406,10 +381,10 @@ function resolve_file_path(file, callback) {
   } else {
     split_path.splice(split_path.indexOf('bracks'), 1);
     for (i = 0; i < split_path.length; i += 1) {
-      resolved_file_path += split_path[i] + '/';
+      resolved_path += split_path[i] + '/';
     }
-    resolved_file_path = resolved_file_path.slice(0, resolved_file_path.length - 1);
-    return callback(null, resolved_file_path);
+    resolved_path = resolved_path.slice(0, resolved_path.length - 1);
+    return callback(null, resolved_path);
   }
 }
 
@@ -443,55 +418,55 @@ function parse_html(file, callback) {
   return callback(src);
 }
 
-/**
- * bracks gulp-plugin main function
- *
- * @return {stream.Transform} a through2 stream with the callback function containing the transformed file
- * @public
- */
-
-module.exports = function() {
-  return thru.obj(function(file, enc, callback) {
-    var transformed_ejs_src, transformed_file;
-    if (file.isNull()) {
-      return callback(null, file);
-    }
-    if (path.parse(file.path).ext === '.html') {
-      resolve_file_path(file, function(err, resolved_file_path) {
-        if (err !== null) {
-          return callback(new PluginError(PLUGIN_NAME, err), file);
-        } else {
-          parse_html(file, function(transformed_html_src) {
-            transformed_file = new gutil.File({
-              cwd: "",
-              base: "",
-              path: resolved_file_path,
-              contents: new Buffer(transformed_html_src)
+module.exports = function(bracks_src_path, callback) {
+  var transformed_file, transformed_ejs_src, error;
+  vfs.src(path.join(bracks_src_path, '/**/*.+(html|ejs)'))
+    .pipe(thru.obj(function(file, enc, callback) {
+      if (file.isNull()) {
+        error = new Error('bracks-parser error -> input file is null');
+        return callback(new Error('bracks-parser error -> input file is null'), file);
+      }
+      if (file.extname === '.html') {
+        resolve_file_path(file, function(err, resolved_path) {
+          if (err !== null) {
+            error = new Error(err);
+            return callback(new Error(err), file);
+          } else {
+            parse_html(file, function(transformed_html_src) {
+              transformed_file = new Vfile({
+                cwd: "",
+                base: "",
+                path: resolved_path,
+                contents: new Buffer(transformed_html_src)
+              });
+              return callback(null, transformed_file);
             });
-            return callback(null, transformed_file);
-          });
-        }
-      });
-    } else if (path.parse(file.path).ext === '.ejs') {
-      resolve_file_path(file, function(err, resolved_file_path) {
-        if (err !== null) {
-          return callback(new PluginError(PLUGIN_NAME, err), file);
-        } else {
-          parse_html(file, function(transformed_html_src) {
-            transformed_ejs_src = transformed_html_src;
-            Object.keys(EJS_TAGS).forEach(function(key) {
-              transformed_ejs_src = transformed_ejs_src.replace(EJS_TAGS[key], key);
+          }
+        });
+      } else if (file.extname === '.ejs') {
+        resolve_file_path(file, function(err, resolved_path) {
+          if (err !== null) {
+            error = new Error(err);
+            return callback(new Error(err), file);
+          } else {
+            parse_html(file, function(transformed_html_src) {
+              transformed_ejs_src = transformed_html_src;
+              Object.keys(EJS_TAGS).forEach(function(key) {
+                transformed_ejs_src = transformed_ejs_src.replace(EJS_TAGS[key], key);
+              });
+              transformed_file = new Vfile({
+                cwd: "",
+                base: "",
+                path: resolved_path,
+                contents: new Buffer(transformed_ejs_src)
+              });
+              return callback(null, transformed_file);
             });
-            transformed_file = new gutil.File({
-              cwd: "",
-              base: "",
-              path: resolved_file_path,
-              contents: new Buffer(transformed_ejs_src)
-            });
-            return callback(null, transformed_file);
-          });
-        }
-      });
-    }
+          }
+        });
+      }
+    })).pipe(vfs.dest('./'))
+  .on('end', function() {
+    return callback(null, true);
   });
 };

@@ -1,6 +1,6 @@
 #gulp-bracks
 
-[![NPM Version][npm-image]][npm-url] [![NPM Downloads][downloads-image]][downloads-url] 
+[![travis build][travis-image]][travis-url] [![npm version][npm-image]][npm-url] [![npm downloads][downloads-image]][downloads-url] 
 
 bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
 #####Install
@@ -76,7 +76,8 @@ html[
   ]body
 ]html
 ```
-
+[travis-image]: https://img.shields.io/travis/mawni/gulp-bracks/master.svg
+[travis-url]: https://travis-ci.org/mawni/gulp-bracks
 [npm-image]: https://img.shields.io/npm/v/gulp-bracks.svg
 [npm-url]: https://npmjs.org/package/gulp-bracks
 [downloads-image]: https://img.shields.io/npm/dm/gulp-bracks.svg
