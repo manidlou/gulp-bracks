@@ -402,7 +402,7 @@ function resolve_file_path(file, callback) {
   var split_path = (file.path).split('/');
   var i;
   if (split_path.indexOf('bracks') === -1) {
-    return callback('bracks-parser error -> path to \'bracks\' directory cannot be null.', file);
+    return callback(new PluginError(PLUGIN_NAME, 'bracks-parser error -> path to \'bracks\' directory cannot be null.'), file);
   } else {
     split_path.splice(split_path.indexOf('bracks'), 1);
     for (i = 0; i < split_path.length; i += 1) {
@@ -459,7 +459,7 @@ module.exports = function() {
     if (path.parse(file.path).ext === '.html') {
       resolve_file_path(file, function(err, resolved_file_path) {
         if (err !== null) {
-          return callback(new PluginError(PLUGIN_NAME, err), file);
+          return callback(new PluginError(PLUGIN_NAME, err.message), file);
         } else {
           parse_html(file, function(transformed_html_src) {
             transformed_file = new gutil.File({
@@ -475,7 +475,7 @@ module.exports = function() {
     } else if (path.parse(file.path).ext === '.ejs') {
       resolve_file_path(file, function(err, resolved_file_path) {
         if (err !== null) {
-          return callback(new PluginError(PLUGIN_NAME, err), file);
+          return callback(new PluginError(PLUGIN_NAME, err.message), file);
         } else {
           parse_html(file, function(transformed_html_src) {
             transformed_ejs_src = transformed_html_src;
