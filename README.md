@@ -1,8 +1,8 @@
 #gulp-bracks
 
-[![travis build][travis-image]][travis-url] [![npm version][npm-image]][npm-url] [![npm downloads][downloads-image]][downloads-url] 
+[![travis build][travis-image]][travis-url] [![npm version][npm-image]][npm-url]
 
-bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
+bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks](https://github.com/mawni/nodejs-bracks).
 #####Install
 `npm install gulp-bracks --save-dev`
 #####How to use
