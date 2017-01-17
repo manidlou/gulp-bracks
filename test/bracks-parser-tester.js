@@ -385,7 +385,7 @@ module.exports = function(bracks_src_path, cb) {
             parse_html(file, function(transformed_html_src) {
               transformed_file = new Vfile({
                 cwd: "",
-                base: "",
+                base: null,
                 path: resolved_path,
                 contents: new Buffer(transformed_html_src)
               });
@@ -405,7 +405,7 @@ module.exports = function(bracks_src_path, cb) {
               });
               transformed_file = new Vfile({
                 cwd: "",
-                base: "",
+                base: null,
                 path: resolved_path,
                 contents: new Buffer(transformed_ejs_src)
               });
@@ -415,7 +415,7 @@ module.exports = function(bracks_src_path, cb) {
         });
       }
     })).pipe(vfs.dest('./'))
-  .on('end', function() {
-    return cb(null, 0);
-  });
+    .on('end', function() {
+      return cb(null, 0);
+    });
 };
