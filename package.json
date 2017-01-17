@@ -4,7 +4,7 @@
   "description": "bracks plugin for gulp",
   "main": "gulp-bracks.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec ./test/*.js"
+    "test": "mocha"
   },
   "dependencies": {
     "gulp-util": "^3.0.7",
@@ -17,16 +17,16 @@
     "bracks-plugin",
     "gulp-bracks"
   ],
-  "author": "Mawni Maghsoudlou",
+  "author": "Mani Maghsoudlou",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mawni/gulp-bracks.git"
+    "url": "git+https://github.com/manidlou/gulp-bracks.git"
   },
   "bugs": {
-    "url": "https://github.com/mawni/gulp-bracks/issues"
+    "url": "https://github.com/manidlou/gulp-bracks/issues"
   },
-  "homepage": "https://github.com/mawni/gulp-bracks#readme",
+  "homepage": "https://github.com/manidlou/gulp-bracks#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",

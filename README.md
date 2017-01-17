@@ -2,7 +2,7 @@
 
 [![travis build][travis-image]][travis-url] [![npm version][npm-image]][npm-url]
 
-bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/mawni/nodejs-bracks-parser).
+bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/manidlou/nodejs-bracks-parser).
 #####Install
 `npm install gulp-bracks --save-dev`
 #####How to use
@@ -76,9 +76,8 @@ html[
   ]body
 ]html
 ```
-[travis-image]: https://img.shields.io/travis/mawni/gulp-bracks/master.svg
-[travis-url]: https://travis-ci.org/mawni/gulp-bracks
+
+[travis-image]: https://img.shields.io/travis/manidlou/gulp-bracks/master.svg
+[travis-url]: https://travis-ci.org/manidlou/gulp-bracks
 [npm-image]: https://img.shields.io/npm/v/gulp-bracks.svg
-[npm-url]: https://npmjs.org/package/gulp-bracks
-[downloads-image]: https://img.shields.io/npm/dm/gulp-bracks.svg
-[downloads-url]: https://npmjs.org/package/gulp-bracks
+[npm-url]: https://www.npmjs.com/package/gulp-bracks
