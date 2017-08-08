@@ -1,11 +1,11 @@
-#gulp-bracks
+# gulp-bracks
 
 [![travis build][travis-image]][travis-url] [![npm version][npm-image]][npm-url]
 
 bracks plugin for [gulp](https://github.com/gulpjs/gulp). If you don't know what `bracks` style document is, please read [bracks-parser](https://github.com/manidlou/nodejs-bracks-parser).
-#####Install
+##### Install
 `npm install gulp-bracks --save-dev`
-#####How to use
+##### How to use
 If you want to write your `html` or `ejs` files `bracks` style, just create a directory under your project root directory and name it `bracks`. Then, keep all the `html` or `ejs` files that you want to write in a `bracks` syntax in this direcory. Files can be located in sub-direcories in this `bracks` directory, just notice the pattern for the gulp src path in the following `gulpfile.js` example. Also, notice the file extension can be `.html` or `.ejs`. `bracks-parser` understands both of them. If it is needed, the src path can be set like `gulp.src('./bracks/**/*.+(html|ejs)')` in order to get both `.html` and `.ejs` file extensions. Under the hood, the parser parses all files under `bracks` directory, and returns the transformed file for being used by the next function down in the stream. So, if gulp watches the `bracks` directory (similar to the following example), as you change your `bracks` files, their corresponding html||ejs formatted documents are dynamically being overwritten and updated.
 
 Something like the following will do the job for you.
@@ -27,7 +27,7 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['bracks', 'watch']);
 ```
-#####Example of a `bracks` style html document
+##### Example of a `bracks` style html document
 *index.html*:
 ```
 <!DOCTYPE html>
@@ -51,7 +51,7 @@ html[
   ]body
 ]html
 ```
-#####Example of a `bracks` style ejs document
+##### Example of a `bracks` style ejs document
 *index.ejs*:
 ```
 <!DOCTYPE html>
