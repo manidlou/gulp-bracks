@@ -2,7 +2,7 @@
  * gulp-bracks
  * This software is released under the MIT license:
  * 
- * Copyright (c) <2016> <Mawni Maghsoudlou>
+ * Copyright (c) 2017 Mani Maghsoudlou
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,16 +24,11 @@
 
 'use strict';
 
-/**
- * Module dependencies.
- * @private
- */
-
 const path = require('path');
 const thru = require('through2');
 const gutil = require('gulp-util');
 const PLUGIN_NAME = 'gulp-bracks';
-var PluginError = gutil.PluginError;
+const PluginError = gutil.PluginError;
 
 /**
  * end tags regular expressions object mapping
